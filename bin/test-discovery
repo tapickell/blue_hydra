@@ -16,28 +16,28 @@ import bluezutils
 import time
 
 def property_changed(name, value):
-	if (name == "Discovering" and not value):
-		sys.exit(0)
+  if (name == "Discovering" and not value):
+    sys.exit(0)
 
 if __name__ == '__main__':
-	dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
+  dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
 
-	bus = dbus.SystemBus()
+  bus = dbus.SystemBus()
 
-	option_list = [
-			make_option("-i", "--device", action="store",
-					type="string", dest="dev_id"),
-			]
-	parser = OptionParser(option_list=option_list)
+  option_list = [
+      make_option("-i", "--device", action="store",
+          type="string", dest="dev_id"),
+      ]
+  parser = OptionParser(option_list=option_list)
 
-	(options, args) = parser.parse_args()
+  (options, args) = parser.parse_args()
 
-	adapter = bluezutils.find_adapter(options.dev_id)
+  adapter = bluezutils.find_adapter(options.dev_id)
 
-	bus.add_signal_receiver(property_changed,
-					dbus_interface = "org.bluez.Adapter1",
-					signal_name = "PropertyChanged")
+  bus.add_signal_receiver(property_changed,
+          dbus_interface = "org.bluez.Adapter1",
+          signal_name = "PropertyChanged")
 
-	adapter.StartDiscovery()
-	time.sleep(30)
-	adapter.StopDiscovery()
+  adapter.StartDiscovery()
+  time.sleep(30)
+  adapter.StopDiscovery()
